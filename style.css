@@ -1,0 +1,167 @@
+/* Phần B: Hoàn thiện CSS theo đề, KHÔNG dùng thư viện ngoài. */
+* { box-sizing: border-box; }
+
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  --primary: #176650;
+  --primary-dark: #0f4d3c;
+  --primary-soft: #e6f4ef;
+  --border: #d9e2de;
+  --muted: #6b7280;
+  --danger: #c0392b;
+  --danger-soft: #fdecea;
+  --radius: 12px;
+  --shadow: 0 2px 10px rgba(23, 102, 80, 0.08);
+}
+
+body { margin: 0; background: #f7faf9; line-height: 1.5; }
+.container { width: min(1060px, 94%); margin: 0 auto; }
+
+.site-header { padding: 24px 0; background: #176650; color: white; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.site-header h1 { margin: 0 0 6px; }
+.site-header p { margin: 0; }
+.site-footer { margin-top: 28px; padding: 20px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); background: #fff; }
+.site-footer strong { color: var(--primary); }
+
+/* ---------- Bố cục chính: Grid 2 cột (form | danh sách) ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+.card h2 { margin: 0 0 16px; font-size: 1.15rem; color: var(--primary); }
+.form-card { position: sticky; top: 16px; }
+
+/* ---------- Form ---------- */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field.grow { flex: 1; min-width: 0; }
+label { font-size: .9rem; font-weight: 700; }
+.required { color: var(--danger); }
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:hover, select:hover { border-color: #9fb9ae; }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(23, 102, 80, .18);
+}
+input.invalid { border-color: var(--danger); background: var(--danger-soft); }
+input.invalid:focus { box-shadow: 0 0 0 3px rgba(192, 57, 43, .18); }
+
+.form-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  font-size: .9rem;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-left: 4px solid var(--danger);
+  border-radius: 6px;
+}
+.form-error[hidden], .empty-state[hidden] { display: none; }
+
+/* ---------- Nút ---------- */
+.btn {
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  padding: 9px 14px;
+  transition: background .15s, transform .1s, box-shadow .15s, color .15s, border-color .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 3px solid rgba(23, 102, 80, .4); outline-offset: 2px; }
+
+.btn-primary { width: 100%; padding: 12px; color: #fff; background: var(--primary); }
+.btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(23, 102, 80, .3); }
+
+.btn-done { color: var(--primary); background: var(--primary-soft); border-color: #b7dccf; }
+.btn-done:hover { background: var(--primary); color: #fff; }
+
+.btn-delete { color: var(--danger); background: #fff; border-color: #f0c4be; }
+.btn-delete:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+/* ---------- Danh sách ---------- */
+.list-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.list-head h2 { margin-bottom: 0; }
+.task-count { margin: 0; font-size: .88rem; color: var(--muted); }
+
+.toolbar { display: flex; gap: 14px; margin: 14px 0 6px; padding-bottom: 14px; border-bottom: 1px dashed var(--border); }
+.toolbar .field { margin-bottom: 0; }
+.toolbar .field:not(.grow) { width: 190px; }
+
+.task-list { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--muted);
+  border-radius: 10px;
+  transition: transform .15s, box-shadow .15s, background .15s;
+}
+.task-item:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.task-item.prio-cao { border-left-color: #e74c3c; }
+.task-item.prio-trung-binh { border-left-color: #f39c12; }
+.task-item.prio-thap { border-left-color: #27ae60; }
+
+.task-main { min-width: 0; flex: 1; }
+.task-title { margin: 0 0 8px; font-size: 1.02rem; font-weight: 700; overflow-wrap: anywhere; }
+.task-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .82rem; color: var(--muted); }
+
+.badge { display: inline-block; padding: 3px 10px; font-size: .78rem; font-weight: 700; border-radius: 999px; white-space: nowrap; }
+.badge-cao { color: #b03a2e; background: #fdecea; }
+.badge-trung-binh { color: #b9770e; background: #fef5e0; }
+.badge-thap { color: #1e8449; background: #e6f6ec; }
+.badge-pending { color: #1f5f99; background: #e5f0fb; }
+.badge-done { color: #fff; background: var(--primary); }
+.badge-overdue { color: #fff; background: var(--danger); }
+
+.task-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* Trạng thái đã hoàn thành */
+.task-item.is-done { background: #f3f8f6; border-color: #cfe3da; }
+.task-item.is-done .task-title { text-decoration: line-through; color: var(--muted); }
+.task-item.is-done .btn-done { color: var(--muted); background: #fff; border-color: var(--border); }
+.task-item.is-done .btn-done:hover { background: var(--muted); color: #fff; }
+
+.empty-state { margin: 18px 0 4px; padding: 28px 16px; text-align: center; color: var(--muted); background: #f7faf9; border: 2px dashed var(--border); border-radius: 10px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .form-card { position: static; }
+}
+
+@media (max-width: 520px) {
+  .site-header h1 { font-size: 1.5rem; }
+  .card { padding: 16px; }
+  .toolbar { flex-direction: column; gap: 12px; }
+  .toolbar .field:not(.grow) { width: 100%; }
+  .task-item { flex-direction: column; align-items: stretch; }
+  .task-actions .btn { flex: 1; }
+}
